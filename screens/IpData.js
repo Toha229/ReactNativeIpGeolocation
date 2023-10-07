@@ -1,9 +1,17 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import Button from "../components/UI/Button";
 
 function IpData({ route, navigation }) {
   const data = route.params.data;
 
-  if (data) {
+  const ShowOnMap = () => {
+    navigation.navigate("Map", {
+      initialLat: parseFloat(data.latitude),
+      initialLng: parseFloat(data.longitude),
+    });
+  };
+
+  if (data.country_name) {
     return (
       <ScrollView style={styles.form}>
         <Text style={styles.bigLabel}>IP: {data.ip}</Text>
@@ -20,6 +28,7 @@ function IpData({ route, navigation }) {
         <Text style={styles.label}>State: {data.state_prov}</Text>
         <Text style={styles.label}>City: {data.city}</Text>
         <Text style={styles.label}>Curency: {data.currency.code}</Text>
+        <Button onPress={ShowOnMap}>Locate on Map</Button>
       </ScrollView>
     );
   } else {

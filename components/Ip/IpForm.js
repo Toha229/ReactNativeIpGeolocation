@@ -30,7 +30,6 @@ function IpForm() {
         <TextInput style={styles.input} onChangeText={changeIpHandler} />
       </View>
       <Button onPress={getIpHandler}>Search</Button>
-      {/* <Text style={styles.label}>{data.continent_name}</Text> */}
     </ScrollView>
   );
 }
