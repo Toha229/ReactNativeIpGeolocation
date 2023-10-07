@@ -20,3 +20,15 @@ export default function GetIpGeolocation(ip, handler) {
       console.log(error);
     });
 }
+
+export function GetIpData(ip, handler) {
+  fetch(`http://ip-api.com/json/${ip}`)
+    .then(function (response) {
+      response.json().then((json) => {
+        handler(json);
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}

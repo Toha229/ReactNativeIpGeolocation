@@ -1,12 +1,21 @@
 import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import Button from "../UI/Button";
-import GetIpGeolocation from "../../services/IpGeolocationService";
+import GetIpGeolocation, {
+  GetIpData,
+} from "../../services/IpGeolocationService";
 import { useNavigation } from "@react-navigation/native";
+import DropDownPicker from "react-native-dropdown-picker";
 
 function IpForm() {
   const [enteredIp, setEnteredIp] = useState("");
-  const [data, setData] = useState();
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("ipgeolocation");
+  const [items, setItems] = useState([
+    { label: "app.ipgeolocation.io", value: "ipgeolocation" },
+    { label: "ip-api.com", value: "ip-api" },
+  ]);
 
   const navigation = useNavigation();
 
@@ -15,7 +24,11 @@ function IpForm() {
   }
 
   function getIpHandler() {
-    GetIpGeolocation(enteredIp, showResult);
+    if (value == "ipgeolocation") {
+      GetIpGeolocation(enteredIp, showResult);
+    } else {
+      GetIpData(enteredIp, showResult);
+    }
   }
   function showResult(json) {
     navigation.navigate("IpData", {
@@ -24,13 +37,20 @@ function IpForm() {
   }
 
   return (
-    <ScrollView style={styles.form}>
-      <View>
-        <Text style={styles.label}>Input Ip</Text>
-        <TextInput style={styles.input} onChangeText={changeIpHandler} />
-      </View>
+    <View style={styles.form}>
+      <Text style={styles.label}>Input Ip</Text>
+      <TextInput style={styles.input} onChangeText={changeIpHandler} />
+      <Text style={styles.label}>Select The Service</Text>
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+      />
       <Button onPress={getIpHandler}>Search</Button>
-    </ScrollView>
+    </View>
   );
 }
 export default IpForm;

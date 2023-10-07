@@ -5,11 +5,30 @@ function IpData({ route, navigation }) {
   const data = route.params.data;
 
   const ShowOnMap = () => {
-    navigation.navigate("Map", {
-      initialLat: parseFloat(data.latitude),
-      initialLng: parseFloat(data.longitude),
-    });
+    if (data.status == "success") {
+      navigation.navigate("Map", {
+        initialLat: parseFloat(data.lat),
+        initialLng: parseFloat(data.lon),
+      });
+    } else {
+      navigation.navigate("Map", {
+        initialLat: parseFloat(data.latitude),
+        initialLng: parseFloat(data.longitude),
+      });
+    }
   };
+
+  if (data.status == "success") {
+    return (
+      <ScrollView style={styles.form}>
+        <Text style={styles.bigLabel}>IP: {data.query}</Text>
+        <Text style={styles.label}>Country: {data.country}</Text>
+        <Text style={styles.label}>State: {data.regionName}</Text>
+        <Text style={styles.label}>City: {data.city}</Text>
+        <Button onPress={ShowOnMap}>Locate on Map</Button>
+      </ScrollView>
+    );
+  }
 
   if (data.country_name) {
     return (
@@ -17,7 +36,7 @@ function IpData({ route, navigation }) {
         <Text style={styles.bigLabel}>IP: {data.ip}</Text>
         <View style={styles.container}>
           <Image
-            style={styles.logo}
+            style={styles.flag}
             source={{
               uri: data.country_flag,
             }}
@@ -31,13 +50,13 @@ function IpData({ route, navigation }) {
         <Button onPress={ShowOnMap}>Locate on Map</Button>
       </ScrollView>
     );
-  } else {
-    return (
-      <ScrollView style={styles.form}>
-        <Text style={styles.bigLabel}>Error</Text>
-      </ScrollView>
-    );
   }
+
+  return (
+    <ScrollView style={styles.form}>
+      <Text style={styles.bigLabel}>Error</Text>
+    </ScrollView>
+  );
 }
 
 export default IpData;
@@ -51,8 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  logo: {
-    textAlign: "center",
+  flag: {
     width: 95,
     height: 50,
   },
