@@ -7,13 +7,13 @@ function IpData({ route, navigation }) {
   const ShowOnMap = () => {
     if (data.status == "success") {
       navigation.navigate("Map", {
-        initialLat: parseFloat(data.lat),
-        initialLng: parseFloat(data.lon),
+        initialLat: Number(data.lat),
+        initialLng: Number(data.lon),
       });
     } else {
       navigation.navigate("Map", {
-        initialLat: parseFloat(data.latitude),
-        initialLng: parseFloat(data.longitude),
+        initialLat: Number(data.latitude),
+        initialLng: Number(data.longitude),
       });
     }
   };
